@@ -1,0 +1,162 @@
+docker					To verify if docker is installed
+apt install docker.io			To install docker package on Ubuntu
+docker ps				To list docker container (running only)
+docker ps -a				To list docker container (all containers)
+docker pull ubuntu			To pull docker images
+docker images				To list docker images
+docker create --name ubuntu01 ubuntu	To create a container using ubuntu image with custom name
+docker create ubuntu			To cretae a container using ubuntu image without custom name
+docker start dreamy_liskov		To start container with name
+docker start 5706093ca838		To start a container with id (get the id using docker ps -a_)
+docker pull alpine			To pull alpine image
+docker run -itd --name ubuntu03 ubuntu	To start a container with foreground process
+docker exec -it ubuntu03 /bin/bash	To login to container
+docker history ubuntu			To see the layers of an image
+hostname
+vim
+ls
+FROM ubuntu:latest
+RUN apt install vim -y
+CMD "/bin/bash"
+which docker
+systemctl status docker.service
+top
+
+
+
+day2
+docker run 
+docker exec -it ubuntu03 /bin/bash 
+ls -ltr
+tree
+mkdir Nagesh
+cd Nagesh
+touch file1.txt
+exit
+docker run -itd --name nginx3 --publish 8000:80 nginx:latest
+docker exec -it nginx3 /bin/bash
+apt update && apt install -y iputils-ping
+docker inspect container name
+docker image inspect containerid
+docker network ls
+docker volume ls
+docker network inspect bridge
+docker volume inspect volume name
+docker start container id
+docker stop container id
+docker ps -aq is command used for filter the containers
+docker start $(docker ps -a -q)
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+standard port numbers
+docker pull nginx
+docker create --name web1 nginx
+docker start web01
+docker ps
+docker inspect web01
+docker inspect web01 | grep -i "IPAddress"
+ifconfig
+docker pull httpd
+docker run -itd --name httpd01 -p90:80 httpd
+docker run -d -p 60:80 --name web01 nginx
+
+
+day3
+
+docker swarm 
+lunch three instances one master and two worker nodes
+connect to mobaxterm
+use multiexe mode
+install docker in three docker instances
+start docker in three instances
+systemctl start docker.service
+systemctl status docker.service
+and stop multiexec
+this steps in master
+docker swarm init --advertise-addr copy privateip
+docker node ls
+copy the swarm token copy and paste in two nodes
+docker swarm leave
+to remove permently "docker node rm nodeid"
+docker swarm leave --force
+docker swarm join-token manager
+docker swarm join-token worker
+docker service create --name swiggy --replicas 3 --publish 80:80 httpd
+docker service ls
+docker ps -a in three instances
+docker stop containerid
+docker service ps swiggy
+docker service rm swiggy
+docker service logs swiggy
+docker service scale uber=7
+docker service roolback swiggy
+
+
+day4
+
+docker networking
+ps aux is the command default running programs in the background this is called process
+ps -ef
+docker pull ubuntu
+docker start ubuntu03
+docker ps
+docker exec -it ubuntu03 /bin/bash is the command to enter the container
+ps -ef
+exit
+docker ps
+docker attach ubuntu03
+docker inspect ubuntu03
+docker image inspect image id
+docker network ls
+docker volume ls
+docker inspect network bridge 
+docker ps
+docker stop container id
+docker ps -a -q only print all container id
+docker pull nginx 
+docker run -itd --name web01 nginx
+docker run -itd --name web02 nginx
+docker start $ (docker ps -a -q)
+docker start web01
+docker ps
+docker inspect web01
+docker inspect web01 | grep -i "IPAddress"
+ifconfig
+docker stop container name
+ifconfig
+docker start container name
+ifconfig
+docker exec -it web01 /bin/bash
+ifconfig
+docker exec -it web01 ls
+docker exec -it web01 hostname
+
+ping www.google.com
+
+docker pull centos
+docker pull nginx
+docker pull ubuntu 
+docker run -itd --name srv01 centos
+docker run -itd --name ubuntu03 ubuntu
+docker run -itd --name web01 nginx
+docker exec -it srv01 ping google.com
+docker exec -it srv01 ls -ltr
+docker exec -it srv01 /bin/bash
+ping google.com
+ping web01
+ping ubuntu03
+ping with web01 container ip 172.17.0.2 
+ping with ubuntu03 container ip 172.17.0.3
+docker network create my-bridge01 --driver bridge
+docker network inspect bridge | grep -i "subnet"
+docker run -itd --name web1 --network=my-bridge01 nginx
+docker run -itd --name web5 --network=my-bridge01 nginx
+docker run -itd --name web6 --network=my-bridge01 centos
+docker exec -it web1 /bin/bash
+docker run -itd --name httpd02 --network=host httpd
+docker inspect host
+
+
+
+
+
