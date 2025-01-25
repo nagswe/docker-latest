@@ -156,7 +156,43 @@ docker exec -it web1 /bin/bash
 docker run -itd --name httpd02 --network=host httpd
 docker inspect host
 
+apt install maven
+git clone https://github.com/nagswe/Petclinic.git
+cd petclinic/
+ll
+mvn clean install package
+cd target/
+ll
+cp petclinic.war /opt/apache-tomcat-9.0.96/webapps/
+cd /opt/apache-tomcat-9.0.89/webapps/
+copy publicip/petclinic
 
+FROM maven:3.8.4-openjdk-11
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn package
+CMD ["java","-jar","target/bmi-1.0.jar"]
+EXPOSE 8000
+docker build -t my-mvn-app .
+
+vi Dockerfile2
+# Multi-staged docker file
+# Stage 1: Build the application
+FROM maven:3.8.4-openjdk-11 AS builder
+WORKDIR /app
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn package
+
+# Stage 2: Create the production image
+FROM openjdk:11-jre-slim
+WORKDIR /app
+COPY --from=builder /app/target/bmi-1.0.jar .
+EXPOSE 8001
+CMD ["java", "-jar", "bmi-1.0.jar"]
 
 
 
